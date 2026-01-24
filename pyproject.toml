@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanop-lca-tea"
+version = "0.1.0"
+description = "LCA-TEA Framework for Nano Hydroxyapatite Phosphorus Fertilizer"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "SIQI"}
+]
+keywords = ["lca", "tea", "nano-fertilizer", "hydroxyapatite", "phosphorus", "life-cycle-assessment"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ResearchGeekSQ/PhosphorusNanofertilizer"
+Repository = "https://github.com/ResearchGeekSQ/PhosphorusNanofertilizer"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nanop*"]

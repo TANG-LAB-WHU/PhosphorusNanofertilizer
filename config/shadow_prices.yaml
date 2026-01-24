@@ -1,0 +1,109 @@
+# Shadow Prices for External Cost Calculation
+# Based on CE Delft 2023 Environmental Prices Handbook
+# All prices in USD/kg (converted from EUR at 1.08 EUR/USD)
+
+# Climate Change
+# USD per kg CO2-eq
+climate_change:
+  central: 0.130 # ~120 EUR/tonne CO2
+  low: 0.065
+  high: 0.260
+
+# Acidification
+# USD per mol H+-eq
+acidification:
+  central: 0.85
+  low: 0.42
+  high: 1.70
+
+# Eutrophication (Freshwater)
+# USD per kg P-eq
+eutrophication_fresh:
+  central: 4.32
+  low: 2.16
+  high: 8.64
+
+# Eutrophication (Marine)
+# USD per kg N-eq
+eutrophication_marine:
+  central: 1.62
+  low: 0.81
+  high: 3.24
+
+# Human Toxicity (Cancer)
+# USD per CTUh
+human_toxicity_cancer:
+  central: 7.56e+5
+  low: 3.78e+5
+  high: 1.51e+6
+
+# Human Toxicity (Non-cancer)
+# USD per CTUh
+human_toxicity_noncancer:
+  central: 1.30e+5
+  low: 6.48e+4
+  high: 2.59e+5
+
+# Freshwater Ecotoxicity
+# USD per CTUe
+ecotoxicity_freshwater:
+  central: 5.62e-3
+  low: 2.81e-3
+  high: 1.12e-2
+
+# Particulate Matter
+# USD per disease incidence
+particulate_matter:
+  central: 7.02e+5
+  low: 3.51e+5
+  high: 1.40e+6
+
+# Resource Depletion
+# USD per kg Sb-eq
+resource_depletion:
+  central: 3.24
+  low: 1.62
+  high: 6.48
+
+# Water Use
+# USD per m3 water-eq
+water_use:
+  central: 0.22
+  low: 0.11
+  high: 0.43
+
+# Direct substance prices for simplified external cost
+# USD per kg emission
+direct_substances:
+  CO2:
+    central: 0.130
+    low: 0.065
+    high: 0.260
+  SO2:
+    central: 11.88 # high due to health impacts
+    low: 5.94
+    high: 23.76
+  NOx:
+    central: 8.64
+    low: 4.32
+    high: 17.28
+  PM2.5:
+    central: 108.0
+    low: 54.0
+    high: 216.0
+  PM10:
+    central: 43.2
+    low: 21.6
+    high: 86.4
+  NH3:
+    central: 18.36
+    low: 9.18
+    high: 36.72
+  phosphorus:
+    central: 12.96
+    low: 6.48
+    high: 25.92
+  nitrogen:
+    central: 4.86
+    low: 2.43
+    high: 9.72

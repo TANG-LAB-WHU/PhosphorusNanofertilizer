@@ -1,0 +1,78 @@
+# NanoP LCA-TEA Configuration
+
+project:
+  name: "NanoP-LCA-TEA"
+  version: "0.1.0"
+  description: "Life Cycle Assessment and Techno-Economic Analysis for Nano Hydroxyapatite Phosphorus Fertilizer"
+
+functional_unit:
+  description: "1 tonne nano hydroxyapatite phosphorus fertilizer (nanoP) produced"
+  value: 1000 # kg
+  unit: "kg"
+
+economic:
+  discount_rate: 0.08 # 8%
+  lifetime_years: 15
+  base_currency: "USD"
+  base_year: 2024
+  annual_operating_hours: 8000
+
+lca:
+  method: "ILCD"
+  normalization_reference: "Global"
+  impact_categories:
+    - climate_change # kg CO2-eq
+    - acidification # mol H+-eq
+    - eutrophication_fresh # kg P-eq
+    - eutrophication_marine # kg N-eq
+    - human_toxicity_cancer # CTUh
+    - human_toxicity_noncancer # CTUh
+    - ecotoxicity_freshwater # CTUe
+    - particulate_matter # disease incidence
+    - resource_depletion # kg Sb-eq
+    - water_use # m3 water-eq
+
+tea:
+  include_external_costs: true
+  shadow_price_source: "CE Delft 2023"
+  cost_categories:
+    - capex_equipment
+    - capex_installation
+    - opex_materials
+    - opex_utilities
+    - opex_labor
+    - opex_maintenance
+    - revenue
+
+uncertainty:
+  monte_carlo_iterations: 1000
+  default_distribution: "triangular"
+  default_variation: 0.2 # ±20%
+
+# NanoP Synthesis Process Parameters
+nanop_synthesis:
+  # Wet chemical precipitation method
+  # Ca10(PO4)6(OH)2 - Hydroxyapatite
+  # Ca/P molar ratio: 1.67
+
+  calcium_source: "CaCl2" # or Ca(OH)2, Ca(NO3)2
+  phosphate_source: "H3PO4" # or (NH4)2HPO4, Na2HPO4
+
+  # Process conditions
+  reaction_temperature: 80 # °C
+  reaction_time: 2 # hours
+  ph_control: 10 # maintained by NH4OH or NaOH
+  aging_time: 24 # hours
+
+  # Product specifications
+  particle_size_nm: 50 # average particle size
+  crystallinity: 0.85 # crystallinity index
+  purity: 0.98 # mass fraction
+
+  # Yield and efficiency
+  calcium_conversion: 0.95
+  phosphorus_recovery: 0.92
+
+pathways:
+  enabled:
+    - NanoP-Synth # Nano hydroxyapatite synthesis (wet chemical)

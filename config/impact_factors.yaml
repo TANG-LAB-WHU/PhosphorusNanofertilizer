@@ -1,0 +1,108 @@
+# Characterization Factors for Life Cycle Impact Assessment
+# Based on ILCD 2011 Midpoint+ method
+# Reference: JRC Technical Reports
+
+# Climate Change (GWP100)
+# Unit: kg CO2-eq per kg substance
+climate_change:
+  CO2: 1.0
+  CH4: 29.8 # IPCC AR6 (with feedback)
+  N2O: 273.0
+  SF6: 25200.0
+  HFC-134a: 1526.0
+  CF4: 7380.0
+
+# Acidification
+# Unit: mol H+-eq per kg substance
+acidification:
+  SO2: 1.31
+  NOx: 0.74
+  NH3: 1.96
+  HCl: 0.88
+  HF: 1.6
+
+# Freshwater Eutrophication
+# Unit: kg P-eq per kg substance
+eutrophication_fresh:
+  PO4: 0.33
+  P: 1.0
+  phosphate: 0.33
+  phosphorus: 1.0
+
+# Marine Eutrophication
+# Unit: kg N-eq per kg substance
+eutrophication_marine:
+  NOx: 0.039
+  NH3: 0.092
+  NO3: 0.23
+  N: 1.0
+  nitrogen: 1.0
+  nitrate: 0.23
+
+# Human Toxicity (Cancer)
+# Unit: CTUh per kg substance
+human_toxicity_cancer:
+  chromium_vi: 1.46e-5
+  arsenic: 1.30e-5
+  cadmium: 1.36e-6
+  formaldehyde: 1.71e-8
+  benzene: 6.02e-9
+  nickel: 2.54e-7
+
+# Human Toxicity (Non-cancer)
+# Unit: CTUh per kg substance
+human_toxicity_noncancer:
+  lead: 4.91e-7
+  mercury: 3.17e-5
+  zinc: 1.44e-8
+  copper: 8.03e-8
+  manganese: 5.63e-7
+  fluoride: 8.89e-8
+
+# Freshwater Ecotoxicity
+# Unit: CTUe per kg substance
+ecotoxicity_freshwater:
+  copper: 5.15e+3
+  zinc: 1.45e+3
+  nickel: 2.67e+2
+  chromium: 9.73e+1
+  lead: 3.54e+1
+  cadmium: 1.09e+4
+
+# Particulate Matter
+# Unit: disease incidence per kg substance
+particulate_matter:
+  PM2.5: 6.51e-4
+  PM10: 2.45e-4
+  SO2: 1.04e-4 # secondary PM
+  NOx: 5.19e-5 # secondary PM
+  NH3: 3.89e-4 # secondary PM
+
+# Resource Depletion (Minerals)
+# Unit: kg Sb-eq per kg substance
+resource_depletion:
+  phosphorus: 2.3e-2
+  copper: 1.37
+  zinc: 5.82e-1
+  lead: 1.35e-1
+  molybdenum: 4.46
+  antimony: 1.0
+
+# Water Use
+# Unit: m3 water-eq per m3 water
+water_use:
+  water: 1.0
+
+# Process-specific emissions factors
+# Electricity grid emission factors (kg CO2-eq/kWh)
+electricity:
+  china_grid: 0.555
+  eu_grid: 0.275
+  us_grid: 0.386
+  global_average: 0.475
+
+# Natural gas combustion (kg CO2/kWh thermal)
+natural_gas:
+  co2: 0.185
+  nox: 5.0e-5
+  so2: 1.0e-6
