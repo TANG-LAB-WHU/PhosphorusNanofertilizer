@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "LCA-TEA Framework for Nano Hydroxyapatite Phosphorus Fertilizer"
 readme = "README.md"
 license = {text = "MIT"}
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     {name = "SIQI"}
 ]
@@ -18,7 +18,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
@@ -37,8 +36,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ResearchGeekSQ/PhosphorusNanofertilizer"
-Repository = "https://github.com/ResearchGeekSQ/PhosphorusNanofertilizer"
+Homepage = "https://github.com/TANG-LAB-WHU/PhosphorusNanofertilizer"
+Repository = "https://github.com/TANG-LAB-WHU/PhosphorusNanofertilizer.git"
 
 [tool.setuptools.packages.find]
 where = ["."]

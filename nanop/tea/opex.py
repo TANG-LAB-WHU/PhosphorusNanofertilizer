@@ -127,6 +127,13 @@ class OPEXCalculator:
     
     def _calculate_labor(self, labor_data: Dict) -> float:
         """Calculate labor cost with regional adjustment."""
+        # Check if per-tonne cost is provided directly
+        if "per_tonne_cost" in labor_data:
+            per_tonne = labor_data["per_tonne_cost"]
+            factor = self.LABOR_FACTORS.get(self.country, 1.0)
+            return per_tonne * factor
+        
+        # Otherwise calculate from annual cost and operators
         base_cost = labor_data.get("annual_cost", 0)
         n_operators = labor_data.get("operators", 0)
         

@@ -223,6 +223,16 @@ class NanoPSynthesisPathway(BasePathway):
         """Return OPEX data for TEA."""
         p = self.parameters
         
+        # Calculate per-tonne labor cost
+        # Annual labor = operators × cost_per_operator × regional_factor
+        # Per-tonne labor = Annual labor / annual_capacity
+        n_operators = 6
+        annual_cost_per_operator = 45000  # USD/year (global average)
+        # Note: regional factor will be applied by OPEXCalculator
+        # We provide per-tonne cost here
+        annual_labor_cost = n_operators * annual_cost_per_operator
+        labor_per_tonne = annual_labor_cost / self.capacity  # Divide by annual capacity
+        
         return {
             "materials": [
                 {"name": "CaCl2", "quantity": p["cacl2_consumption"], "price": 0.18},  # USD/kg
@@ -235,8 +245,7 @@ class NanoPSynthesisPathway(BasePathway):
                 {"name": "deionized_water", "quantity": p["water_consumption"], "price": 0.01},
             ],
             "labor": {
-                "operators": 6,
-                "annual_cost": 45000,  # USD/operator/year (global average)
+                "per_tonne_cost": labor_per_tonne,  # Pre-calculated per-tonne cost
             },
             "maintenance": 25,  # USD per tonne (from CAPEX percentage)
             "other": 10,  # USD per tonne (waste disposal, quality control)

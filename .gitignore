@@ -1,0 +1,144 @@
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===========================
+# Virtual Environments
+# ===========================
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# ===========================
+# IDE & Editors
+# ===========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ===========================
+# Jupyter Notebooks
+# ===========================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ===========================
+# Testing
+# ===========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ===========================
+# Logs & Temporary Files
+# ===========================
+*.log
+*.tmp
+*.temp
+*.bak
+logs/
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Data & Output (Large Files)
+# ===========================
+data/raw/
+data/processed/
+data/cache/
+*.csv
+*.xlsx
+*.xls
+!data/templates/*.csv
+!data/templates/*.xlsx
+output/
+results/
+exports/
+
+# ===========================
+# Model & Cache Files
+# ===========================
+models/*.pkl
+models/*.joblib
+models/*.h5
+*.pickle
+*.pkl
+
+# ===========================
+# Documentation Build
+# ===========================
+docs/_build/
+site/
+
+# ===========================
+# Secrets & Credentials
+# ===========================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+credentials/
+
+# ===========================
+# Package Managers
+# ===========================
+Pipfile.lock
+poetry.lock
+
+# ===========================
+# mypy / type checking
+# ===========================
+.mypy_cache/
+.dmypy.json
+dmypy.json
