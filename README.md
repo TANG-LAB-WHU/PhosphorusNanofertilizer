@@ -29,13 +29,13 @@ A comprehensive framework for Life Cycle Assessment (LCA) and Techno-Economic An
 ## Core Modules
 
 | Module | Description | Key Classes |
-|--------|-------------|-------------|
+| :--- | :--- | :--- |
 | `nanop/lca` | Life Cycle Assessment | `LCAEngine`, `LifeCycleInventory`, `ImpactAssessment` |
 | `nanop/tea` | Techno-Economic Analysis | `TEAEngine`, `CAPEXCalculator`, `OPEXCalculator` |
 | `nanop/pathways` | Production Pathways | `BasePathway`, `NanoPSynthesisPathway` |
 | `nanop/utils` | Utilities | `format_currency`, `convert_currency` |
-| `nanop/data` | Data Ingestion | `DataLoader`, `DataStandardizer`, `DataSource` |
-| `nanop/ai` | AI & Knowledge Graph | `KnowledgeGraph`, `RAGEngine`, `GapFiller` |
+| `nanop/data` | Data Ingestion | `DataLoader`, `PDFParser`, `DataStandardizer` |
+| `nanop/ai_knowledge` | AI & Knowledge Graph | `NanoPRAG`, `PaperToKGPipeline` |
 
 ## System Architecture
 
@@ -243,34 +243,31 @@ print(f"NPV: ${npv_result['npv']:,.0f}")
 ## Run Demo
 
 ```bash
-python main.py
+# Main LCA-TEA engine demo
+python examples/lca_tea_demo.py
+
+# AI & Knowledge Graph pipeline demo
+python examples/ai_knowledge_demo.py
 ```
 
 ## Project Structure
 
-```
+```text
 PhosphorusNanofertilizer/
 ├── nanop/                    # Main package
 │   ├── lca/                  # LCA module
-│   │   ├── engine.py         # LCA calculation engine
-│   │   ├── inventory.py      # Life cycle inventory
-│   │   ├── characterization.py
-│   │   └── impact_assessment.py
 │   ├── tea/                  # TEA module
-│   │   ├── engine.py         # TEA calculation engine
-│   │   ├── capex.py          # Capital costs
-│   │   ├── opex.py           # Operating costs
-│   │   └── external_cost.py  # External cost monetization
 │   ├── pathways/             # Production pathways
-│   │   ├── base_pathway.py
-│   │   └── nanop_synthesis.py
+│   ├── ai_knowledge/         # AI & Knowledge Graph (with LightRAG)
+│   ├── data/                 # Data ingestion & PDF parsing
 │   └── utils/                # Utilities
+├── examples/                 # Usage examples
+│   ├── lca_tea_demo.py       # Core engine demo
+│   └── ai_knowledge_demo.py  # AI pipeline demo
 ├── config/                   # Configuration files
-│   ├── settings.yaml
-│   ├── impact_factors.yaml
-│   └── shadow_prices.yaml
-├── main.py                   # Demo script
+├── data/                     # Raw and processed data
 ├── requirements.txt
+├── pyproject.toml
 └── README.md
 ```
 
@@ -278,11 +275,12 @@ PhosphorusNanofertilizer/
 
 The framework models wet chemical precipitation of nano hydroxyapatite:
 
-```
+```text
 10 CaCl₂ + 6 (NH₄)₂HPO₄ + 8 NH₄OH → Ca₁₀(PO₄)₆(OH)₂ + 20 NH₄Cl + 6 H₂O
 ```
 
 **Key Parameters:**
+
 - Functional unit: 1 tonne nanoP produced
 - Ca/P molar ratio: 1.67
 - Particle size: ~50 nm

@@ -211,9 +211,6 @@ def format_results_table(
 ) -> str:
     """
     Format results as a text table.
-    
-    Returns:
-        Formatted string
     """
     lines = [
         "",
@@ -246,8 +243,3 @@ def format_results_table(
     lines.append("└" + "─" * 50 + "┘")
     
     return "\n".join(lines)
-
-
-if __name__ == "__main__":
-    # Example
-    print("Results module loaded successfully")

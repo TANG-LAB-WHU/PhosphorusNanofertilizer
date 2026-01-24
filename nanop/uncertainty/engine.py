@@ -23,11 +23,11 @@ class UncertaintyResult:
     def __post_init__(self):
         if len(self.samples) > 0 and not self.percentiles:
             self.percentiles = {
-                5: np.percentile(self.samples, 5),
-                25: np.percentile(self.samples, 25),
-                50: np.percentile(self.samples, 50),
-                75: np.percentile(self.samples, 75),
-                95: np.percentile(self.samples, 95),
+                5: float(np.percentile(self.samples, 5)),
+                25: float(np.percentile(self.samples, 25)),
+                50: float(np.percentile(self.samples, 50)),
+                75: float(np.percentile(self.samples, 75)),
+                95: float(np.percentile(self.samples, 95)),
             }
             self.confidence_interval = (self.percentiles[5], self.percentiles[95])
 
@@ -156,8 +156,8 @@ class UncertaintyEngine:
             if len(values) > 0:
                 uncertainty_results[key] = UncertaintyResult(
                     metric_name=key,
-                    mean=np.mean(values),
-                    std=np.std(values),
+                    mean=float(np.mean(values)),
+                    std=float(np.std(values)),
                     samples=values
                 )
         
@@ -259,19 +259,3 @@ class UncertaintyEngine:
             "base_value": base_value,
             "elasticities": [r.elasticity for r in sensitivity_results]
         }
-
-
-if __name__ == "__main__":
-    # Example usage
-    engine = UncertaintyEngine(seed=42)
-    
-    # Sample from triangular distribution
-    samples = engine.sample_parameter({
-        "type": "triangular",
-        "min": 0.8,
-        "mode": 1.0,
-        "max": 1.2
-    }, 1000)
-    
-    print(f"Mean: {np.mean(samples):.3f}")
-    print(f"Std: {np.std(samples):.3f}")

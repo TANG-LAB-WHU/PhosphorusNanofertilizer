@@ -17,42 +17,32 @@ class PipelineResult:
     
     source: str
     status: str
-    entities_extracted: int = 0
-    relations_extracted: int = 0
+    pages: int = 0
+    structured_data_extracted: bool = False
     query_ready: bool = False
     error: Optional[str] = None
 
 
 class PaperToKnowledgeGraphPipeline:
     """
-    End-to-end pipeline: PDF → Text → Knowledge Graph → RAG Query
-    
-    Combines:
-    - PDFParser (PyMuPDF/MinerU) for document parsing
-    - NanoPRAG (LightRAG) for knowledge graph construction and RAG
-    
-    Usage:
-        pipeline = PaperToKnowledgeGraphPipeline(llm_provider="gemini")
-        await pipeline.initialize()
-        
-        # Process papers
-        await pipeline.process_paper("paper.pdf")
-        
-        # Query
-        result = await pipeline.query("What is the carbon footprint?")
+    Enhanced End-to-end pipeline for large-scale processing.
+    PDF → Text (MinerU) → Structured Extraction (AI) → Knowledge Graph (LightRAG)
     """
     
     def __init__(
         self,
         working_dir: str = "./data/rag_storage",
         llm_provider: str = "gemini",
-        pdf_parser_type: str = "pymupdf",  # pymupdf or mineru
+        pdf_parser_type: str = "mineru",
+        extract_structured: bool = True,
     ):
         self.working_dir = Path(working_dir)
         self.llm_provider = llm_provider
         self.pdf_parser_type = pdf_parser_type
+        self.extract_structured = extract_structured
         
         self._pdf_parser = None
+        self._ai_extractor = None
         self._rag = None
         self._initialized = False
     
@@ -65,6 +55,10 @@ class PaperToKnowledgeGraphPipeline:
         from nanop.data import PDFParser
         self._pdf_parser = PDFParser(parser_type=self.pdf_parser_type)
         
+        # Initialize AI Extractor for structured data
+        from nanop.ai_knowledge import AIPaperParser
+        self._ai_extractor = AIPaperParser(backend=self.llm_provider)
+        
         # Initialize LightRAG
         from nanop.ai_knowledge import NanoPRAG, LIGHTRAG_AVAILABLE
         
@@ -75,85 +69,101 @@ class PaperToKnowledgeGraphPipeline:
             )
             await self._rag.initialize()
         else:
-            print("⚠️ LightRAG not available. Install: pip install lightrag-hku")
+            print("⚠️ LightRAG not available.")
             self._rag = None
         
         self._initialized = True
-        print(f"✓ Pipeline initialized")
-        print(f"  PDF Parser: {self.pdf_parser_type}")
-        print(f"  LLM Provider: {self.llm_provider}")
-        print(f"  LightRAG: {'Available' if self._rag else 'Not Available'}")
+        print(f"✓ Pipeline initialized for large-scale processing")
     
     async def process_paper(self, filepath: Union[str, Path]) -> PipelineResult:
         """
-        Process a single paper: parse PDF and insert into knowledge graph.
-        
-        Args:
-            filepath: Path to PDF file
-            
-        Returns:
-            PipelineResult with processing status
+        Process a single paper with dual-track ingestion:
+        1. Markdown text for context
+        2. Structured JSON fact blocks for precision
         """
         if not self._initialized:
             await self.initialize()
         
         path = Path(filepath)
+        result = PipelineResult(source=str(path), status="processing")
         
-        # Step 1: Parse PDF
+        # Step 1: High-quality PDF Parsing
         try:
             doc = self._pdf_parser.parse_pdf(path)
-            print(f"✓ Parsed: {path.name} ({doc.pages} pages)")
+            result.pages = doc.pages
         except Exception as e:
-            return PipelineResult(
-                source=str(path),
-                status="failed",
-                error=f"PDF parsing failed: {e}"
-            )
+            result.status = "failed"
+            result.error = f"Parsing error: {e}"
+            return result
         
-        # Step 2: Insert into LightRAG
+        # Step 2: Structured Fact Extraction (Optional but recommended)
+        json_facts = ""
+        if self.extract_structured and self._ai_extractor:
+            try:
+                # Extract LCI and TEA data
+                lci = self._ai_extractor.extract_lci(doc.text, source=path.name)
+                tea = self._ai_extractor.extract_tea(doc.text, source=path.name)
+                
+                # Combine into high-density facts
+                facts = {
+                    "lca_inventory": lci.to_dict(),
+                    "tea_metrics": tea.to_dict(),
+                    "tables_found": len(doc.tables)
+                }
+                json_facts = (
+                    f"\n\n### HIGH-PRECISION STRUCTURED DATA FOR {path.name} ###\n"
+                    f"```json\n{json.dumps(facts, indent=2, ensure_ascii=False)}\n```\n"
+                )
+                result.structured_data_extracted = True
+            except Exception as e:
+                print(f"⚠️ Structured extraction failed for {path.name}: {e}")
+        
+        # Step 3: Dual-Track Ingestion into LightRAG
         if self._rag:
             try:
+                # Track 1: Full text for context and semantic graph
                 await self._rag.insert_text(doc.text)
-                print(f"✓ Inserted into knowledge graph")
                 
-                return PipelineResult(
-                    source=str(path),
-                    status="success",
-                    query_ready=True
-                )
+                # Track 2: Structured facts for precision queries (LCA/TEA values)
+                if json_facts:
+                    await self._rag.insert_text(json_facts)
+                
+                result.status = "success"
+                result.query_ready = True
             except Exception as e:
-                return PipelineResult(
-                    source=str(path),
-                    status="partial",
-                    error=f"KG insertion failed: {e}"
-                )
-        else:
-            return PipelineResult(
-                source=str(path),
-                status="partial",
-                error="LightRAG not available"
-            )
+                result.status = "failed"
+                result.error = f"Ingestion error: {e}"
+        
+        return result
     
     async def process_directory(
         self, 
         directory: Union[str, Path],
-        pattern: str = "*.pdf"
+        pattern: str = "*.pdf",
+        batch_size: int = 10
     ) -> List[PipelineResult]:
-        """Process all PDFs in a directory."""
+        """
+        Process directory in batches for scalability.
+        """
         if not self._initialized:
             await self.initialize()
         
         directory = Path(directory)
-        results = []
+        pdf_files = list(directory.glob(pattern))
+        all_results = []
         
-        for pdf_path in directory.glob(pattern):
-            result = await self.process_paper(pdf_path)
-            results.append(result)
+        print(f"🚀 Starting batch processing of {len(pdf_files)} papers...")
         
-        success = sum(1 for r in results if r.status == "success")
-        print(f"\n✓ Processed {success}/{len(results)} papers")
+        for i in range(0, len(pdf_files), batch_size):
+            batch = pdf_files[i:i+batch_size]
+            tasks = [self.process_paper(f) for f in batch]
+            batch_results = await asyncio.gather(*tasks)
+            all_results.extend(batch_results)
+            
+            success = sum(1 for r in batch_results if r.status == "success")
+            print(f"  Batch {i//batch_size + 1}: {success}/{len(batch)} successful")
         
-        return results
+        return all_results
     
     async def query(
         self, 
@@ -208,8 +218,8 @@ class PaperToKGPipelineSync:
     def process_paper(self, filepath) -> PipelineResult:
         return self._run(self._async_pipeline.process_paper(filepath))
     
-    def process_directory(self, directory, pattern="*.pdf") -> List[PipelineResult]:
-        return self._run(self._async_pipeline.process_directory(directory, pattern))
+    def process_directory(self, directory, pattern="*.pdf", batch_size=10) -> List[PipelineResult]:
+        return self._run(self._async_pipeline.process_directory(directory, pattern, batch_size))
     
     def query(self, question: str, mode: str = "hybrid") -> str:
         return self._run(self._async_pipeline.query(question, mode))

@@ -412,15 +412,12 @@ Paper text:
         Returns:
             Dict with extracted LCI, TEA, and metadata
         """
-        from nanop.data.loader import PDFParser
+        from nanop.data import PDFParser
         
         parser = PDFParser()
-        parsed = parser.parse(filepath)
+        doc = parser.parse_pdf(filepath)
         
-        if "error" in parsed:
-            return {"error": parsed["error"]}
-        
-        text = parsed.get("text", "")
+        text = doc.text
         source = Path(filepath).name
         
         return {

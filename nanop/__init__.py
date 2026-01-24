@@ -10,7 +10,7 @@ from nanop.lca.engine import LCAEngine
 from nanop.tea.engine import TEAEngine
 from nanop.pathways import get_pathway, list_pathways
 from nanop.uncertainty import UncertaintyEngine
-from nanop.results import ResultsExporter, AnalysisReport
+from nanop.report import ResultsExporter, AnalysisReport
 
 __all__ = [
     "LCAEngine",
@@ -21,3 +21,4 @@ __all__ = [
     "ResultsExporter",
     "AnalysisReport",
 ]
+
