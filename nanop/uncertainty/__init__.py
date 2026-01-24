@@ -2,7 +2,7 @@
 Uncertainty Analysis Module
 """
 
-from nanop.uncertainty.engine import (
+from nanop.uncertainty.uc_engine import (
     UncertaintyEngine,
     UncertaintyResult,
     SensitivityResult
