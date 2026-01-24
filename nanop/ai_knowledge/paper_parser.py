@@ -262,10 +262,11 @@ Paper text:
         if self.backend == "google_genai":
             import google.generativeai as genai
             import os
+            from nanop.utils.api_mgmt import get_default_model
             key = self.api_key or os.environ.get("GOOGLE_API_KEY")
             if key:
                 genai.configure(api_key=key)
-            self._client = genai.GenerativeModel("gemini-1.5-flash")
+            self._client = genai.GenerativeModel(get_default_model())
         
         elif self.backend == "openai":
             import openai

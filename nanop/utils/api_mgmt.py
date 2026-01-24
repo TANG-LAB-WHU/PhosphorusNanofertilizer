@@ -9,6 +9,10 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv, set_key
 
+# Default model if not configured in .env
+DEFAULT_GEMINI_MODEL = "gemini-2.0-flash"
+
+
 def load_api_keys():
     """Load API keys from .env file."""
     env_path = Path(".env")
@@ -16,6 +20,20 @@ def load_api_keys():
         load_dotenv(env_path)
         return True
     return False
+
+
+def get_default_model() -> str:
+    """
+    Get the default Gemini model from environment variable.
+    
+    Configure in .env file:
+        GEMINI_MODEL=gemini-2.0-flash
+    
+    Returns:
+        Model name string (defaults to gemini-2.0-flash if not set)
+    """
+    load_api_keys()  # Ensure .env is loaded
+    return os.environ.get("GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
 
 def set_gemini_key(api_key: str):
     """Save Gemini API key to .env file."""

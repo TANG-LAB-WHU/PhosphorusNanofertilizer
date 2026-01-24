@@ -114,7 +114,8 @@ class NanoPRAG:
         """Get LLM and embedding functions based on provider."""
         if self.llm_provider == "gemini":
             from lightrag.llm.gemini import gemini_complete, gemini_embed
-            model = self.model_name or "gemini-1.5-flash"
+            from nanop.utils.api_mgmt import get_default_model
+            model = self.model_name or get_default_model()
             return (
                 lambda *args, **kwargs: gemini_complete(model, *args, **kwargs),
                 gemini_embed

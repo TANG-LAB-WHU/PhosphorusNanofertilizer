@@ -35,9 +35,13 @@ class TestCAPEXCalculator:
             "contingency_pct": 0.1
         }
         
-        result = calc.calculate(capex_data)
-        assert result["total"] > 0
-        assert result["annualized"] > 0
+        # Use the correct method name: calculate_total
+        total = calc.calculate_total(capex_data)
+        assert total > 0
+        
+        # Test annualize method separately
+        annualized = calc.annualize(total, 0.05, 20)
+        assert annualized > 0
 
 
 class TestOPEXCalculator:

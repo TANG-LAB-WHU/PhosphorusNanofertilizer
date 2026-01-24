@@ -29,9 +29,11 @@ class TestFlow:
             name="electricity",
             quantity=500.0,
             unit="kWh",
-            uncertainty=0.1
+            uncertainty_min=450.0,
+            uncertainty_max=550.0
         )
-        assert flow.uncertainty == 0.1
+        assert flow.uncertainty_min == 450.0
+        assert flow.uncertainty_max == 550.0
 
 
 class TestLifeCycleInventory:
@@ -115,7 +117,7 @@ class TestCharacterizationFactors:
     
     def test_get_factor(self):
         cf = CharacterizationFactors()
-        factor = cf.get_factor("CO2", "climate_change")
+        factor = cf.get_factor("climate_change", "CO2")  # Correct parameter order: (impact_category, substance)
         assert factor == 1.0  # CO2 has GWP of 1
 
 

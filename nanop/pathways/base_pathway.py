@@ -113,15 +113,18 @@ class BasePathway(ABC):
         Returns:
             Scaled inventory as dict
         """
-        # Update parameters if provided
+        # Use temporary inventory to avoid modifying the original self.inventory
         if parameters:
             old_params = self.parameters.copy()
             self.parameters.update(parameters)
-            self.inventory = self._build_inventory()
-            self.parameters = old_params
+            temp_inventory = self._build_inventory()
+            self.parameters = old_params  # Restore original parameters
+            # Scale using temporary inventory
+            scaled = temp_inventory.scale_to(functional_unit_kg)
+        else:
+            # Use original inventory
+            scaled = self.inventory.scale_to(functional_unit_kg)
         
-        # Scale inventory
-        scaled = self.inventory.scale_to(functional_unit_kg)
         return scaled.to_dict()
     
     def get_emissions(self) -> Dict:
