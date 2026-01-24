@@ -34,7 +34,7 @@ A comprehensive framework for Life Cycle Assessment (LCA) and Techno-Economic An
 | `nanop/tea` | Techno-Economic Analysis | `TEAEngine`, `CAPEXCalculator`, `OPEXCalculator` |
 | `nanop/pathways` | Production Pathways | `BasePathway`, `NanoPSynthesisPathway` |
 | `nanop/utils` | Utilities | `format_currency`, `convert_currency` |
-| `nanop/data` | Data Ingestion | `DataLoader`, `PDFParser`, `DataStandardizer` |
+| `nanop/iodata` | Data Ingestion | `DataLoader`, `PDFParser`, `DataStandardizer` |
 | `nanop/ai_knowledge` | AI & Knowledge Graph | `NanoPRAG`, `PaperToKGPipeline` |
 
 ## System Architecture
@@ -259,7 +259,7 @@ PhosphorusNanofertilizer/
 │   ├── tea/                  # TEA module
 │   ├── pathways/             # Production pathways
 │   ├── ai_knowledge/         # AI & Knowledge Graph (with LightRAG)
-│   ├── data/                 # Data ingestion & PDF parsing
+│   ├── iodata/               # Data ingestion & PDF parsing
 │   └── utils/                # Utilities
 ├── examples/                 # Usage examples
 │   ├── lca_tea_demo.py       # Core engine demo

@@ -18,7 +18,7 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from nanop.ai_knowledge import PaperToKGPipelineSync, LIGHTRAG_AVAILABLE
-from nanop.data import PDFParser
+from nanop.iodata import PDFParser
 
 async def run_ai_demo():
     print("=" * 70)

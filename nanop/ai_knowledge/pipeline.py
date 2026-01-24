@@ -52,7 +52,7 @@ class PaperToKnowledgeGraphPipeline:
             return
         
         # Initialize PDF Parser
-        from nanop.data import PDFParser
+        from nanop.iodata import PDFParser
         self._pdf_parser = PDFParser(parser_type=self.pdf_parser_type)
         
         # Initialize AI Extractor for structured data
