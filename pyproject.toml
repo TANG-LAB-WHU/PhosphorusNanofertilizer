@@ -10,7 +10,7 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
 authors = [
-    {name = "SIQI"}
+    {name = "SIQI TANG"}
 ]
 keywords = ["lca", "tea", "nano-fertilizer", "hydroxyapatite", "phosphorus", "life-cycle-assessment"]
 classifiers = [
@@ -21,6 +21,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
+    "Topic:: LCA-TEA",
+    "Topic:: Functional Nanomaterials"
 ]
 
 dependencies = [
@@ -41,7 +43,6 @@ dependencies = [
 [project.optional-dependencies]
 ai = [
     "openai>=1.0.0",
-    "google-generativeai>=0.3.0",
     "google-genai>=1.0.0",
     "langchain>=0.2.0",
     "langchain-community>=0.2.0",
