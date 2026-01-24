@@ -155,50 +155,9 @@ class DataLoader:
         return list(self.data_dir.glob(pattern))
 
 
-class PDFParser:
-    """
-    PDF parser for extracting structured data from research papers.
-    """
-    
-    def __init__(self):
-        self.loader = DataLoader()
-    
-    def parse(self, filepath: Union[str, Path]) -> Dict:
-        """
-        Parse PDF and extract structured information.
-        
-        Returns:
-            Dict with title, abstract, sections, tables, references
-        """
-        data = self.loader.load(filepath)
-        
-        if data.content is None:
-            return {"error": "Failed to parse PDF", "source": str(filepath)}
-        
-        text = data.content
-        
-        # Basic structure extraction
-        return {
-            "source": str(filepath),
-            "text": text,
-            "word_count": len(text.split()),
-            "sections": self._extract_sections(text),
-        }
-    
-    def _extract_sections(self, text: str) -> List[Dict]:
-        """Extract document sections."""
-        sections = []
-        # Simple heuristic: look for common section headers
-        headers = ["abstract", "introduction", "methods", "results", 
-                   "discussion", "conclusion", "references"]
-        
-        text_lower = text.lower()
-        for header in headers:
-            if header in text_lower:
-                sections.append({"name": header, "found": True})
-        
-        return sections
 
+# PDFParser is now imported from .pdf_parser in __init__.py to avoid duplication
+# and provide advanced features (MinerU).
 
 class CSVLoader:
     """

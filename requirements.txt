@@ -9,7 +9,8 @@ pyyaml>=6.0
 networkx>=3.2.0
 python-dotenv>=1.0.0
 
-# AI/ML (Gemini API)
+# AI/ML - LightRAG (Knowledge Graph + RAG)
+lightrag-hku>=1.0.0
 google-genai>=1.0.0
 
 # Data Processing
@@ -17,8 +18,7 @@ pandas>=2.0.0
 PyMuPDF>=1.23.0
 
 # PDF Parsing (Advanced) - Optional
-mineru[all]  # Uncomment for MinerU support (GPU required)
-
+mineru[all]  # MinerU support (GPU required)
 
 # Development (optional)
 pytest>=7.0.0
