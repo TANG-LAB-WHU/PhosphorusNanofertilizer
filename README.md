@@ -265,6 +265,7 @@ PhosphorusNanofertilizer/
 │   ├── lca_tea_demo.py       # Core engine demo
 │   └── ai_knowledge_demo.py  # AI pipeline demo
 ├── config/                   # Configuration files
+│   ├── setup_api.py          # API configuration tool
 ├── data/                     # Raw and processed data
 ├── requirements.txt
 ├── pyproject.toml
