@@ -1,12 +1,25 @@
 # NanoP LCA-TEA Framework Dependencies
+# Primary source of truth: pyproject.toml
+# Install: pip install -e ".[ai,viz,dev]"
 
-# Core scientific computing
+# Core
 numpy>=1.24.0
 scipy>=1.10.0
-
-# Configuration
 pyyaml>=6.0
+networkx>=3.2.0
+python-dotenv>=1.0.0
+
+# AI/ML (Gemini API)
+google-genai>=1.0.0
+
+# Data Processing
+pandas>=2.0.0
+PyMuPDF>=1.23.0
+
+# PDF Parsing (Advanced) - Optional
+mineru[all]  # Uncomment for MinerU support (GPU required)
+
 
 # Development (optional)
-pytest>=7.0
-pytest-cov>=4.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
