@@ -1,36 +1,35 @@
-# NanoP LCA-TEA Configuration
+# nanoPfertilizer-LCA-TEA Configuration
 
 project:
-  name: "NanoP-LCA-TEA"
+  name: "nanoPfertilizer-LCA-TEA"
   version: "0.1.0"
-  description: "Life Cycle Assessment and Techno-Economic Analysis for Nano Hydroxyapatite Phosphorus Fertilizer"
+  description: "Phosphorus Nanofertilizer Life Cycle Assessment and Techno-Economic Analysis"
 
 functional_unit:
-  description: "1 tonne nano hydroxyapatite phosphorus fertilizer (nanoP) produced"
+  description: "1 tonne Phosphorus Nanofertilizer treated"
   value: 1000 # kg
   unit: "kg"
 
 economic:
-  discount_rate: 0.08 # 8%
-  lifetime_years: 15
+  discount_rate: 0.05
+  lifetime_years: 20
   base_currency: "USD"
   base_year: 2024
-  annual_operating_hours: 8000
 
 lca:
   method: "ILCD"
-  normalization_reference: "Global"
+  normalization_reference: "EU27"
   impact_categories:
-    - climate_change # kg CO2-eq
-    - acidification # mol H+-eq
-    - eutrophication_fresh # kg P-eq
-    - eutrophication_marine # kg N-eq
-    - human_toxicity_cancer # CTUh
-    - human_toxicity_noncancer # CTUh
-    - ecotoxicity_freshwater # CTUe
-    - particulate_matter # disease incidence
-    - resource_depletion # kg Sb-eq
-    - water_use # m3 water-eq
+    - climate_change
+    - acidification
+    - eutrophication_fresh
+    - eutrophication_marine
+    - human_toxicity_cancer
+    - human_toxicity_noncancer
+    - ecotoxicity_freshwater
+    - ionizing_radiation
+    - particulate_matter
+    - resource_depletion
 
 tea:
   include_external_costs: true
@@ -47,32 +46,105 @@ tea:
 uncertainty:
   monte_carlo_iterations: 1000
   default_distribution: "triangular"
-  default_variation: 0.2 # ±20%
+  default_variation: 0.2
 
-# NanoP Synthesis Process Parameters
-nanop_synthesis:
-  # Wet chemical precipitation method
-  # Ca10(PO4)6(OH)2 - Hydroxyapatite
-  # Ca/P molar ratio: 1.67
+data_sources:
+  # Local Papers
+  literature:
+    unparsed_path: "./data/raw/papers/unparsed" # Original PDF papers
+    parsed_path: "./data/raw/papers/parsed" # MinerU-converted markdown
 
-  calcium_source: "CaCl2" # or Ca(OH)2, Ca(NO3)2
-  phosphate_source: "H3PO4" # or (NH4)2HPO4, Na2HPO4
+  # Open LCI Databases
+  lci_databases:
+    - name: "ELCD"
+      path: "./data/raw/elcd"
+      url: "https://eplca.jrc.ec.europa.eu/ELCD3/"
+    - name: "USLCI"
+      path: "./data/raw/uslci"
+      url: "https://www.lcacommons.gov/lca-collaboration/"
+    - name: "Agribalyse"
+      path: "./data/raw/agribalyse"
+      url: "https://agribalyse.ademe.fr/"
+    - name: "Idemat"
+      path: "./data/raw/idemat"
+      url: "https://www.intechopen.com/chapters/78082"
 
-  # Process conditions
-  reaction_temperature: 80 # °C
-  reaction_time: 2 # hours
-  ph_control: 10 # maintained by NH4OH or NaOH
-  aging_time: 24 # hours
+  # Open Access Literature APIs
+  open_access:
+    unpaywall:
+      base_url: "https://api.unpaywall.org/v2/"
+      email: "${UNPAYWALL_EMAIL}" # Required for API access
+    pubmed:
+      base_url: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
+      api_key: "${PUBMED_API_KEY}" # Optional, increases rate limit
+    arxiv:
+      base_url: "http://export.arxiv.org/api/"
+      # No API key required
+    openalex:
+      base_url: "https://api.openalex.org/"
+      email: "${OPENALEX_EMAIL}" # Polite pool access
 
-  # Product specifications
-  particle_size_nm: 50 # average particle size
-  crystallinity: 0.85 # crystallinity index
-  purity: 0.98 # mass fraction
+  # Regulatory Databases
+  regulatory:
+    epa:
+      base_url: "https://enviro.epa.gov/enviro/api/"
+      # No API key required for public data
+    eu_reg:
+      base_url: "https://echa.europa.eu/api/"
+      # No API key required for public data
+    un_ece:
+      base_url: "https://data.unece.org/api/"
+      # No API key required
+    iaea:
+      base_url: "https://www.iaea.org/resources/databases/"
+      # Manual download required
 
-  # Yield and efficiency
-  calcium_conversion: 0.95
-  phosphorus_recovery: 0.92
+  # Industry Reports
+  industry:
+    usgs:
+      base_url: "https://www.usgs.gov/programs/national-minerals-information-center/"
+      # Manual download required
+    ifa:
+      base_url: "https://www.ifastat.org/"
+      api_key: "${IFA_API_KEY}" # Placeholder
+    fao:
+      base_url: "https://www.fao.org/faostat/en/"
+      # No API key required
+    world_bank:
+      base_url: "https://api.worldbank.org/v2/"
+      # No API key required
+
+ai:
+  embedding_model: "all-MiniLM-L6-v2"
+  llm_provider: "gemini" # or "openai", "ollama"
+  llm_model: "gemini-2.0-flash"
+  providers:
+    gemini:
+      api_key: "${GEMINI_API_KEY}"
+      api_version: "v1beta"
+    openai:
+      api_key: "${OPENAI_API_KEY}"
+      base_url: "https://api.openai.com/v1"
+    ollama:
+      base_url: "http://localhost:11434"
+      model: "llama3"
+  knowledge_graph:
+    storage_path: "./data/processed/kg"
+    backend: "networkx" # or "neo4j"
+
+visualization:
+  dashboard_port: 8501
+  export_formats:
+    - pdf
+    - html
+    - excel
 
 pathways:
   enabled:
-    - NanoP-Synth # Nano hydroxyapatite synthesis (wet chemical)
+    - PG-Stack # Stack Disposal (baseline)
+    - PG-CementProd # Cement Production
+    - PG-ConstructMat # Construction Materials
+    - PG-Soil # Soil Amendment
+    - PG-ChemReco # Chemical Recovery
+    - PG-REEextract # REE Extraction
+

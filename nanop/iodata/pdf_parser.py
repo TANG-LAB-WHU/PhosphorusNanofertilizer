@@ -9,7 +9,7 @@ import json
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional, Union
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 try:
     import fitz  # PyMuPDF
@@ -38,8 +38,8 @@ class ParsedDocument:
     title: str
     text: str
     pages: int
-    tables: List[Dict] = field(default_factory=list)
-    metadata: Dict = field(default_factory=dict)
+    tables: List[Dict]
+    metadata: Dict
 
 
 class PDFParser:
@@ -133,7 +133,7 @@ class PDFParser:
             title=title,
             text=full_text,
             pages=len(text_content),
-            tables=[],
+            tables=[],  # Table extraction requires additional processing
             metadata=metadata
         )
     
@@ -234,6 +234,9 @@ class PDFParser:
         """
         Parse PDF using MinerU command line interface.
         
+        This method uses the 'mineru' CLI command which may be more stable
+        in some environments.
+        
         Args:
             filepath: Path to the PDF file
             backend: MinerU backend to use:
@@ -278,7 +281,7 @@ class PDFParser:
         if not md_files:
             raise FileNotFoundError(f"No markdown output found in {output_path}")
         
-        # Use the first .md file found
+        # Use the first .md file found (typically named after the PDF)
         md_path = md_files[0]
         with open(md_path, "r", encoding="utf-8") as f:
             text = f.read()
@@ -396,4 +399,8 @@ if __name__ == "__main__":
     print()
     print("# Advanced parsing with MinerU")
     print("parser = PDFParser(parser_type='mineru', language='en')")
+    print("doc = parser.parse_pdf('paper.pdf')")
+    print()
+    print("# CLI-based parsing with MinerU")
+    print("parser = PDFParser(parser_type='mineru_cli')")
     print("doc = parser.parse_pdf('paper.pdf')")

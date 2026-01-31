@@ -1,17 +1,50 @@
 """
-Utilities Module
+Utils Module
 
-Common utility functions for nanoP LCA-TEA framework.
+Common utilities for currency conversion, unit conversion,
+annotations, and physical constants.
 """
 
-from nanop.utils.currency import format_currency, format_currency_full, convert_currency
-from nanop.utils.api_mgmt import load_api_keys, validate_gemini_key, set_gemini_key
+from nanop.utils.currency import (
+    convert_currency,
+    adjust_inflation,
+    get_exchange_rate,
+    CurrencyConverter,
+)
+from nanop.utils.units import (
+    convert_mass,
+    convert_energy,
+    convert_volume,
+    convert_temperature,
+    UnitConverter,
+)
+from nanop.utils.annotations import (
+    DataSource,
+    Assumption,
+    Annotation,
+    annotate,
+)
+from nanop.utils.constants import (
+    PHYSICAL_CONSTANTS,
+    ATOMIC_MASSES,
+    LCA_REFERENCE_VALUES,
+)
 
 __all__ = [
-    "format_currency",
-    "format_currency_full",
     "convert_currency",
-    "load_api_keys",
-    "validate_gemini_key",
-    "set_gemini_key",
+    "adjust_inflation",
+    "get_exchange_rate",
+    "CurrencyConverter",
+    "convert_mass",
+    "convert_energy",
+    "convert_volume",
+    "convert_temperature",
+    "UnitConverter",
+    "DataSource",
+    "Assumption",
+    "Annotation",
+    "annotate",
+    "PHYSICAL_CONSTANTS",
+    "ATOMIC_MASSES",
+    "LCA_REFERENCE_VALUES",
 ]

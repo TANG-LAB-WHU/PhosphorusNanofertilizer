@@ -1,4 +1,4 @@
-# NanoP LCA-TEA Framework Dependencies (Synced with Verified Phosphogypsum Repo)
+# NanoP LCA-TEA Framework Dependencies (Synced with Verified Phosphorus Nanofertilizer Repo)
 # Primary source of truth: pyproject.toml
 # Install: pip install -e ".[ai,viz,kg,dev,pdf]"
 

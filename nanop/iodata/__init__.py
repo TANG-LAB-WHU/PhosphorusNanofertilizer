@@ -1,22 +1,16 @@
 """
-Data Ingestion Module
+Data Ingestion Layer
 
-Provides data loading, parsing, and standardization for LCA-TEA data.
+This module handles data collection from various sources:
+- PDF parsing (local papers)
+- Web scraping (open access databases)
+- API connectors (regulatory databases)
+- Data standardization
 """
 
-from nanop.iodata.loader import DataLoader, CSVLoader
-from nanop.iodata.standardizer import DataStandardizer, UnitConverter
-from nanop.iodata.sources import DataSource, LCIDatabase
-from nanop.iodata.pdf_parser import PDFParser, ParsedDocument
+from nanop.iodata.pdf_parser import PDFParser
+from nanop.iodata.web_scraper import WebScraper
+from nanop.iodata.data_standardizer import DataStandardizer
+from nanop.iodata.api_connector import APIConnector
 
-__all__ = [
-    "DataLoader",
-    "PDFParser",
-    "ParsedDocument",
-    "CSVLoader",
-    "DataStandardizer",
-    "UnitConverter",
-    "DataSource",
-    "LCIDatabase",
-]
-
+__all__ = ["PDFParser", "WebScraper", "DataStandardizer", "APIConnector"]

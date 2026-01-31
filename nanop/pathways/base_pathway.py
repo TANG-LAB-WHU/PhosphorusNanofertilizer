@@ -1,12 +1,12 @@
 """
 Base Pathway Module
 
-Abstract base class for all production pathways.
+Abstract base class for all treatment pathways.
 """
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import copy
 
 from nanop.lca.inventory import LifeCycleInventory
@@ -14,7 +14,7 @@ from nanop.lca.inventory import LifeCycleInventory
 
 @dataclass
 class PathwayConfig:
-    """Configuration for a production pathway."""
+    """Configuration for a treatment pathway."""
     
     name: str
     code: str
@@ -22,12 +22,12 @@ class PathwayConfig:
     trl: int = 9
     country: str = "global"
     year: int = 2024
-    annual_capacity_tonnes: float = 10000
+    annual_capacity_tonnes: float = 100000
 
 
 class BasePathway(ABC):
     """
-    Abstract base class for nano hydroxyapatite production pathways.
+    Abstract base class for Phosphorus Nanofertilizer treatment pathways.
     
     Each pathway must define:
     - LCI data (inputs, outputs, emissions)
@@ -40,7 +40,7 @@ class BasePathway(ABC):
         self,
         country: str = "global",
         year: int = 2024,
-        capacity_tonnes: float = 10000
+        capacity_tonnes: float = 100000
     ):
         """
         Initialize pathway.
@@ -59,7 +59,7 @@ class BasePathway(ABC):
     @property
     @abstractmethod
     def code(self) -> str:
-        """Pathway code (e.g., NanoP-Synth)."""
+        """Pathway code (e.g., PG-SD, PG-CM)."""
         pass
     
     @property
@@ -71,7 +71,7 @@ class BasePathway(ABC):
     @property
     def trl(self) -> int:
         """Technology Readiness Level."""
-        return 7
+        return 9
     
     @abstractmethod
     def _default_parameters(self) -> Dict[str, float]:
@@ -113,18 +113,15 @@ class BasePathway(ABC):
         Returns:
             Scaled inventory as dict
         """
-        # Use temporary inventory to avoid modifying the original self.inventory
+        # Update parameters if provided
         if parameters:
             old_params = self.parameters.copy()
             self.parameters.update(parameters)
-            temp_inventory = self._build_inventory()
-            self.parameters = old_params  # Restore original parameters
-            # Scale using temporary inventory
-            scaled = temp_inventory.scale_to(functional_unit_kg)
-        else:
-            # Use original inventory
-            scaled = self.inventory.scale_to(functional_unit_kg)
+            self.inventory = self._build_inventory()
+            self.parameters = old_params
         
+        # Scale inventory
+        scaled = self.inventory.scale_to(functional_unit_kg)
         return scaled.to_dict()
     
     def get_emissions(self) -> Dict:

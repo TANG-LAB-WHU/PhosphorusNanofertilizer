@@ -8,6 +8,7 @@ from nanop.lca.lca_engine import LCAEngine, LCAResult
 from nanop.lca.inventory import LifeCycleInventory, Flow
 from nanop.lca.characterization import CharacterizationFactors
 from nanop.lca.impact_assessment import ImpactAssessment
+from nanop.lca.normalization import LCANormalizer
 
 __all__ = [
     "LCAEngine",
@@ -16,4 +17,5 @@ __all__ = [
     "Flow",
     "CharacterizationFactors",
     "ImpactAssessment",
+    "LCANormalizer",
 ]

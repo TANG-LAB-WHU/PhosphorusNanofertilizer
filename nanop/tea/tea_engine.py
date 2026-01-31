@@ -16,7 +16,7 @@ from nanop.tea.external_cost import ExternalCostCalculator
 
 @dataclass
 class TEAResult:
-    """Complete TEA result for a production pathway."""
+    """Complete TEA result for a treatment pathway."""
     
     pathway_code: str
     functional_unit: str
@@ -53,16 +53,16 @@ class TEAEngine:
     - CLCC: Conventional Life Cycle Costing
     - SLCC: Societal Life Cycle Costing (includes external costs)
     
-    Functional Unit: 1 tonne nano hydroxyapatite phosphorus fertilizer produced
+    Functional Unit: 1 tonne Phosphorus Nanofertilizer treated
     """
     
-    FUNCTIONAL_UNIT = "1 tonne nano hydroxyapatite phosphorus fertilizer (nanoP) produced"
+    FUNCTIONAL_UNIT = "1 tonne Phosphorus Nanofertilizer treated"
     FUNCTIONAL_UNIT_VALUE = 1000  # kg
     
     # Default economic parameters
     DEFAULT_PARAMS = {
-        "discount_rate": 0.08,  # 8%
-        "lifetime_years": 15,
+        "discount_rate": 0.05,  # 5%
+        "lifetime_years": 20,
         "annual_operating_hours": 8000,
         "currency": "USD",
         "base_year": 2024,
@@ -97,7 +97,7 @@ class TEAEngine:
         if shadow_file.exists():
             try:
                 import yaml
-                with open(shadow_file, "r", encoding="utf-8") as f:
+                with open(shadow_file, "r") as f:
                     prices = yaml.safe_load(f)
                     self.external_calc.update_prices(prices)
             except Exception:
@@ -207,6 +207,7 @@ class TEAEngine:
             name = product.get("name", "unknown")
             quantity = product.get("quantity", 0) * (functional_unit_kg / 1000)  # Scale to FU
             price = product.get("price", 0)
+            unit = product.get("unit", "kg")
             
             revenue = quantity * price
             total += revenue
@@ -282,7 +283,7 @@ class TEAEngine:
     def calculate_npv(
         self,
         pathway,
-        project_lifetime: int = 15,
+        project_lifetime: int = 20,
         annual_throughput: float = None
     ) -> Dict:
         """
@@ -325,15 +326,8 @@ class TEAEngine:
             if cumulative >= 0 and payback is None:
                 payback = year
         
-        # IRR (using numpy)
-        try:
-            irr = float(np.irr(cash_flows))
-        except Exception:
-            irr = None
-        
         return {
             "npv": npv,
-            "irr": irr,
             "payback_years": payback if payback is not None else project_lifetime,
             "annual_profit": annual_profit,
             "total_investment": capex_total
@@ -343,6 +337,6 @@ class TEAEngine:
 if __name__ == "__main__":
     # Example usage
     engine = TEAEngine(country="China")
-    print("TEA Engine initialized successfully.")
-    print(f"Functional unit: {engine.FUNCTIONAL_UNIT}")
-    print(f"Parameters: {engine.params}")
+    # result = engine.calculate(pathway)
+    # print(f"CLCC: ${result.clcc:.2f}/tonne")
+    # print(f"SLCC: ${result.slcc:.2f}/tonne")
