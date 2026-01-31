@@ -1,76 +1,50 @@
 """
-AI and Knowledge Graph Module
-
-Provides LightRAG-based knowledge graph and RAG capabilities.
+Provides knowledge graph construction, LLM extraction, and RAG capabilities for Phosphorus Nanofertilizer.
 """
 
-# LightRAG integration (primary)
-from nanop.ai_knowledge.lightrag_integration import (
-    NanoPRAG,
-    NanoPRAGSync,
-    RAGQueryResult,
-    create_nanop_rag,
-    LIGHTRAG_AVAILABLE,
-)
+from nanop.knowledge.knowledge_graph import PhosphorusNanofertilizerKG
+from nanop.knowledge.llm_extractor import LLMExtractor
+from nanop.knowledge.gap_filler import GapFiller
+from nanop.knowledge.embeddings import EmbeddingModel
 
-# Legacy knowledge graph (for backward compatibility)
-from nanop.ai_knowledge.knowledge_graph import (
-    KnowledgeGraph,
-    Entity,
-    Relationship,
-    EntityType,
-    RelationType,
-    create_nanop_base_graph,
-)
+try:
+    from nanop.knowledge.lightrag_engine import (
+        LightRAGEngine, 
+        LIGHTRAG_AVAILABLE
+    )
+except ImportError:
+    LightRAGEngine = None
+    LIGHTRAG_AVAILABLE = False
 
-# RAG components
-from nanop.ai_knowledge.rag_engine import RAGEngine, DocumentChunk
+# RAGAnything support
+try:
+    from nanop.knowledge.raganything_engine import (
+        RAGAnythingEngine,
+        RAGANYTHING_AVAILABLE
+    )
+except ImportError:
+    RAGAnythingEngine = None
+    RAGANYTHING_AVAILABLE = False
 
-# Gap filling
-from nanop.ai_knowledge.gap_filling import GapFiller
-
-# Paper parsing
-from nanop.ai_knowledge.paper_parser import (
-    AIFeatureDetector,
-    AIPaperParser,
-    ExtractedLCIData,
-    ExtractedTEAData,
-    RuleBasedExtractor,
-)# Pipeline
-from nanop.ai_knowledge.pipeline import (
-    PaperToKnowledgeGraphPipeline,
-    PaperToKGPipelineSync,
-    PipelineResult,
-)
-
+# Optional Neo4j support
+try:
+    from nanop.knowledge.neo4j_adapter import Neo4jAdapter, Neo4jConfig
+    NEO4J_AVAILABLE = True
+except ImportError:
+    Neo4jAdapter = None
+    Neo4jConfig = None
+    NEO4J_AVAILABLE = False
 
 __all__ = [
-    # LightRAG (recommended)
-    "NanoPRAG",
-    "NanoPRAGSync",
-    "RAGQueryResult",
-    "create_nanop_rag",
-    "LIGHTRAG_AVAILABLE",
-    # Legacy knowledge graph
-    "KnowledgeGraph",
-    "Entity",
-    "Relationship",
-    "EntityType",
-    "RelationType",
-    "create_nanop_base_graph",
-    # RAG
-    "RAGEngine",
-    "DocumentChunk",
-    # Gap filling
+    "PhosphorusNanofertilizerKG",
+    "LLMExtractor",
+    "LightRAGEngine",
+    "RAGAnythingEngine",
     "GapFiller",
-    # Paper parsing
-    "AIFeatureDetector",
-    "AIPaperParser",
-    "ExtractedLCIData",
-    "ExtractedTEAData",
-    "RuleBasedExtractor",
-    # Pipeline
-    "PaperToKnowledgeGraphPipeline",
-    "PaperToKGPipelineSync",
-    "PipelineResult",
+    "EmbeddingModel",
+    "Neo4jAdapter",
+    "Neo4jConfig",
+    "NEO4J_AVAILABLE",
+    "LIGHTRAG_AVAILABLE",
+    "RAGANYTHING_AVAILABLE",
 ]

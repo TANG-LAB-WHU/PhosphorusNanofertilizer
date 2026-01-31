@@ -119,7 +119,7 @@ class APIConnector:
         else:
             raise Exception(f"OpenAlex API error: {response.status_code}")
     
-    def search_Phosphorus Nanofertilizer_literature(
+    def search_PhosphorusNanofertilizer_literature(
         self,
         keywords: List[str] = None,
         year_from: int = 2015,
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     connector = APIConnector()
     
     # Search for Phosphorus Nanofertilizer LCA literature
-    results = connector.search_Phosphorus Nanofertilizer_literature(
+    results = connector.search_PhosphorusNanofertilizer_literature(
         keywords=["LCA", "life cycle assessment"],
         year_from=2020
     )

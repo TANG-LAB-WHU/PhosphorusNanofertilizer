@@ -5,6 +5,7 @@ Graph-based knowledge representation for nano-fertilizer LCA-TEA.
 """
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 from enum import Enum
 import json
@@ -76,18 +77,20 @@ class Relationship:
         }
 
 
-class KnowledgeGraph:
+class PhosphorusNanofertilizerKG:
     """
-    Knowledge Graph for nano-fertilizer LCA-TEA domain.
+    Knowledge Graph for Phosphorus Nanofertilizer LCA-TEA domain.
     
     Stores entities and relationships as a graph structure.
     Uses NetworkX for graph operations when available.
     """
     
-    def __init__(self):
+    def __init__(self, storage_path: Optional[Path] = None):
         self.entities: Dict[str, Entity] = {}
         self.relationships: List[Relationship] = []
         self._graph = None
+        self.storage_path = storage_path or Path("./data/processed/knowledge_graph")
+        self.storage_path.mkdir(parents=True, exist_ok=True)
         
         # Try to use NetworkX
         try:
@@ -216,11 +219,11 @@ class KnowledgeGraph:
             self.add_relationship(rel)
 
 
-def create_nanop_base_graph() -> KnowledgeGraph:
+def create_nanop_base_graph() -> PhosphorusNanofertilizerKG:
     """
     Create base knowledge graph for nano-P fertilizer domain.
     """
-    kg = KnowledgeGraph()
+    kg = PhosphorusNanofertilizerKG()
     
     # Materials
     materials = [

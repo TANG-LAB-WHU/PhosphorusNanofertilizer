@@ -31,7 +31,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 load_dotenv(PROJECT_ROOT / ".env")
 
 from nanop.iodata import PDFParser
-from nanop.knowledge import LightRAGEngine, LLMExtractor, Phosphorus NanofertilizerKG
+from nanop.knowledge import LightRAGEngine, LLMExtractor, PhosphorusNanofertilizerKG
 
 # Optional RAGAnything support
 try:
@@ -298,7 +298,7 @@ def step4_build_knowledge_graph():
     print("=" * 60)
     
     # Initialize KG
-    kg = Phosphorus NanofertilizerKG(storage_path=KG_DIR)
+    kg = PhosphorusNanofertilizerKG(storage_path=KG_DIR)
     
     print(f"KG Storage: {KG_DIR}")
     print(f"Extracted Data: {EXTRACTED_DIR}")
